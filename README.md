@@ -1,2 +1,1 @@
-# SummarEase-Text-Summarization
-Text and Document Summarization
+Summarease is a user-friendly web application built with Streamlit, offering powerful text summarization and video transcription functionalities. With Summarease, users can easily summarize lengthy texts or documents, extract key information, and transcribe audio content from video files.
