@@ -19,11 +19,11 @@ from langchain.vectorstores import FAISS
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.prompts import PromptTemplate
-from dotenv import load_dotenv
+
 
 # Load environment variables
 load_dotenv()
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+genai.configure 
 
 # Download NLTK resources
 nltk.download('punkt')
@@ -98,22 +98,6 @@ def get_vector_store(text_chunks):
     vector_store = FAISS.from_texts(text_chunks, embedding=embeddings)
     vector_store.save_local("faiss_index")
 
-def get_conversational_chain():
-    prompt_template = """
-    Answer the question as detailed as possible from the provided context. If the answer is not in the provided context, say, "answer is not available in the context".
-    
-    Context:
-    {context}?
-    Question:
-    {question}
-
-    Answer:
-    """
-    model = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.3)
-    prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
-    chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
-    return chain
-
 def user_input(user_question):
     if not os.path.exists("faiss_index/index.faiss"):
         st.error("Index file not found. Please create the index first by processing the PDF.")
@@ -139,7 +123,7 @@ def main():
     # Add a "Home" button at the top left
     st.sidebar.markdown(
         """
-        <a href="http://127.0.0.1:5500/summarease/index.html" style="text-decoration: none; color: black; font-size: 16px;">
+        <a href="" style="text-decoration: none; color: black; font-size: 16px;">
             🏠 Home
         </a>
         <hr style="border: none; border-top: 1px solid #ccc; margin-top: 10px; margin-bottom: 10px;">
@@ -217,19 +201,6 @@ def main():
                         file_name='summary.docx',
                         mime='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
                     )
-
-    elif choice == "Ask Your PDF":
-        st.subheader("Smart PDF Search – a more intelligent search function within a PDF.")
-        user_question = st.text_input("Ask a Question from the PDF Files")
-        if user_question:
-            user_input(user_question)
-        pdf_docs = st.file_uploader("Upload your PDF Files", accept_multiple_files=True)
-        if st.button("Submit & Process"):
-            with st.spinner("Processing..."):
-                raw_text = get_pdf_text(pdf_docs)
-                text_chunks = get_text_chunks(raw_text)
-                get_vector_store(text_chunks)
-                st.success("Done")
 
     elif choice == "Synonyms":
         st.subheader("Find alternative words and expand your vocabulary.")
